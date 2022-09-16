@@ -1,0 +1,50 @@
+#spring:
+#  application:
+#    name: API-GATEWAY
+#    cloud:
+#      gateway:
+#        routes:
+#          - id: USER-SERVICE
+#            uri: lb://USER-SERVICE
+#            predicates:
+#              - Path=/users/**
+#          - id:DEPARTMENT_SERVICE
+#            uri: lb://DEPARTMENT-SERVICE
+#            predicates:
+#              - Path=/departments/**
+#
+#
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+#  instancehostaname=localhost
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 100
+      permittedNumberOfCallsInHalfOpenState: 10
+      waitDurationInOpenState: 10000
+      failureRateThreshold: 60
+      eventConsumerBufferSize: 10
+      registerHealthIndicator: true
+    someShared:
+      slidingWindowSize: 50
+      permittedNumberOfCallsInHalfOpenState: 10
+resilience4j.bulkhead:
+  configs:
+    default:
+      maxConcurrentCalls: 5
+resilience4j.thread-pool-bulkhead:
+  configs:
+    default:
+      maxThreadPoolSize: 5
+      coreThreadPoolSize: 1
+      queueCapacity: 5
+resilience4j.timelimiter:
+  configs:
+    default:
+      timeoutDuration: 50s
+      cancelRunningFuture: true
